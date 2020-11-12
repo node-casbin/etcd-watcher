@@ -5,12 +5,12 @@
   "main": "lib/watcher.js",
   "typings": "lib/watcher.d.ts",
   "scripts": {
-    "prepack": "yarn run lint && yarn run test && yarn build",
+    "prepack": "yarn build",
     "postpack": "rimraf lib",
     "prettier": "prettier --write **/*.{ts,js}",
     "build": "rimraf lib && tsc -p tsconfig.json",
     "lint": "tslint -p . -c tslint.json",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --forceExit"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.1",
@@ -30,7 +30,7 @@
     "typescript": "^3.7.4"
   },
   "dependencies": {
-    "etcd3": "^0.2.13"
+    "etcd3": "^1.0.2"
   },
   "files": [
     "lib",

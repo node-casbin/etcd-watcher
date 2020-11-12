@@ -38,6 +38,5 @@ export default class EtcdWatcher implements Watcher {
 
   public async close(): Promise<void> {
     this.etcdConnection.close();
-    console.log('Debug: EtcdWatcher -> close');
   }
 }
