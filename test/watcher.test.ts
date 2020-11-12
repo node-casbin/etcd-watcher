@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { newEnforcer } from 'casbin';
-import { EtcdWatcher } from '../src/watcher';
+import EtcdWatcher from '../src/watcher';
 
 test('Test1', async done => {
   const watcher = await EtcdWatcher.newWatcher({hosts: 'http://localhost:2379'});

@@ -2,7 +2,7 @@ import { Watcher } from 'casbin';
 import { IOptions } from 'etcd3';
 import { EtcdConnection } from './etcd';
 
-export class EtcdWatcher implements Watcher {
+export default class EtcdWatcher implements Watcher {
   private keyName: string;
   private etcdConnection: EtcdConnection;
   private callback: () => void;
