@@ -1,0 +1,39 @@
+name: Main
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [^10, ^12, ^14]
+        etcd-version: [v3.1.5, v3.2.4, v3.3.9]
+    steps:
+    - uses: actions/checkout@v1
+    - run: curl -L https://github.com/coreos/etcd/releases/download/${{ matrix.etcd-version }}/etcd-${{ matrix.etcd-version }}-linux-amd64.tar.gz -o /tmp/etcd-${{ matrix.etcd-version }}-linux-amd64.tar.gz
+    - run: mkdir -p /tmp/etcd
+    - run: tar xzvf /tmp/etcd-${{ matrix.etcd-version }}-linux-amd64.tar.gz -C /tmp/etcd --strip-components=1
+    - run: /tmp/etcd/etcd &
+
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: yarn
+    - run: yarn lint
+    - run: yarn test
+      env:
+        ETCD_VERSION: ${{ matrix.etcd-version }}
+
+  semantic-release:
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run semantic-release
+        if: github.repository == 'node-casbin/etcd-watcher' && github.event_name == 'push'
+        run: yarn && yarn publish --access public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          

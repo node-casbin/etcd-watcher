@@ -16,7 +16,9 @@ import { newEnforcer } from 'casbin';
 import EtcdWatcher from '../src/watcher';
 
 test('Test1', async done => {
-  const watcher = await EtcdWatcher.newWatcher({hosts: 'http://localhost:2379'});
+  const watcher = await EtcdWatcher.newWatcher({
+    hosts: 'localhost:2379'
+  });
   const enforcer = await newEnforcer('examples/authz_model.conf', 'examples/authz_policy.csv');
   enforcer.setWatcher(watcher);
   watcher.setUpdateCallback(done);
@@ -25,12 +27,16 @@ test('Test1', async done => {
 });
 
 test('Test2', async done => {
-  const watcher = await EtcdWatcher.newWatcher({hosts: 'http://localhost:2379'});
+  const watcher = await EtcdWatcher.newWatcher({
+    hosts: 'localhost:2379' 
+  });
   const enforcer = await newEnforcer('examples/authz_model.conf', 'examples/authz_policy.csv');
   enforcer.setWatcher(watcher);
   watcher.setUpdateCallback(done);
 
-  const updater = await EtcdWatcher.newWatcher({hosts: 'http://localhost:2379'});
+  const updater = await EtcdWatcher.newWatcher({
+    hosts: 'localhost:2379'
+  });
   await updater.update();
   await updater.close();
 
